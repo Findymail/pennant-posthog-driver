@@ -33,6 +33,7 @@ POSTHOG_HOST=your-host
 
 - [x] Add scope
 - [x] catch exception and return false when catch exception
+- [x] EtE test with command and web route
 
 ## Pennant method not available : 
 - set
