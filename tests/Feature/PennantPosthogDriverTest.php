@@ -31,6 +31,8 @@ class PennantPosthogDriverTest extends TestCase
             ->with('test-feature-flag', '')
             ->andReturn(true);
 
+        $mock->shouldReceive('init');
+
         // process
         $result = $featureManager->active('test-feature-flag', '');
 
@@ -51,6 +53,8 @@ class PennantPosthogDriverTest extends TestCase
             ->with('test-feature-flag', '')
             ->andReturn(null);
 
+        $mock->shouldReceive('init');
+
         // process
         $result = $featureManager->active('test-feature-flag', '');
 
@@ -70,6 +74,8 @@ class PennantPosthogDriverTest extends TestCase
             ->once()
             ->with('test-feature-flag', '')
             ->andReturn(true);
+
+        $mock->shouldReceive('init');
 
         // process
         $result1 = $featureManager->active('test-feature-flag', '');
@@ -97,6 +103,8 @@ class PennantPosthogDriverTest extends TestCase
             ->once()
             ->with('test-feature-flag2', '')
             ->andReturn(true);
+
+        $mock->shouldReceive('init');
 
         // process
         $result = $featureManager->allAreActive(['test-feature-flag1', 'test-feature-flag2']);
