@@ -1,10 +1,14 @@
-This package wrap Posthog Feature flag to Pennnant package. 
+# Pennant Posthog Driver
+
+## Presentation
+This package wrap Posthog Feature flag to Pennnant package.
 
 After installation, you can use Pennant facade to check feature flag from Posthog.
 
-Important Note : if posthog throw exception, it will alwaays return false when check feature flag
+__Important Note__ : if posthog throw exception, it will always return false when check feature flag
 
 
+## Configuration
 Adding configuration :
 
 edit pennant.php config file and add this as stores : 
@@ -25,12 +29,12 @@ POSTHOG_HOST=your-host
 
 
 
-Todo : 
+## Todo : 
 
 - [x] Add scope
 - [x] catch exception and return false when catch exception
 
-Pennant method not available : 
+## Pennant method not available : 
 - set
 - setForAllScopes
 - delete
