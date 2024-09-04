@@ -23,6 +23,8 @@ Don't forget to configure posthog library and initialize it in your app.
 
 Edit .env file :
 ```
+PENNANT_STORE=posthog
+
 POSTHOG_API_KEY=your-api-key
 POSTHOG_HOST=your-host
 ```
