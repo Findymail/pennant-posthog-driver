@@ -39,7 +39,7 @@ class PostHogDriver implements Driver
             return $this->localState[$feature];
         }
 
-        $isEnabled = PostHog::isFeatureEnabled($feature, '') === true;
+        $isEnabled = PostHog::isFeatureEnabled($feature, $scope ?? '') === true;
 
         if (!isset($this->localState[$feature])) {
             $this->localState[$feature] = (bool) $isEnabled;
