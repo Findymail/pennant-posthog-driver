@@ -5,6 +5,7 @@ namespace Findymail\PennantPosthogDriver\Driver;
 use Illuminate\Support\Collection;
 use Laravel\Pennant\Contracts\Driver;
 use PostHog\PostHog;
+use Throwable;
 
 class PostHogDriver implements Driver
 {
@@ -39,7 +40,11 @@ class PostHogDriver implements Driver
             return $this->localState[$feature];
         }
 
-        $isEnabled = PostHog::isFeatureEnabled($feature, $scope ?? '') === true;
+        try {
+            $isEnabled = PostHog::isFeatureEnabled($feature, $scope ?? '') === true;
+        } catch (Throwable) {
+            return false;
+        }
 
         if (!isset($this->localState[$feature])) {
             $this->localState[$feature] = (bool) $isEnabled;
