@@ -16,6 +16,7 @@ class PennantPosthogDriverServiceProvider extends ServiceProvider
     {
         Feature::extend('posthog', function (Application $app) {
             PostHog::init();
+
             return $app->make(PostHogDriver::class);
         });
     }
@@ -24,6 +25,7 @@ class PennantPosthogDriverServiceProvider extends ServiceProvider
     {
         $this->app->singleton(PostHogDriver::class, function (Application $app) {
             PostHog::init();
+
             return new PostHogDriver([]);
         });
     }
