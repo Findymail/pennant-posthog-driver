@@ -5,7 +5,14 @@ This package wrap Posthog Feature flag to Pennnant package.
 
 After installation, you can use Pennant facade to check feature flag from Posthog.
 
-__Important Note__ : if posthog throw exception, it will always return false when check feature flag
+__Important Note__ : 
+- if posthog throw exception, it will always return false when check feature flag
+- installation need a personnal access token
+
+
+## Installation : 
+
+```composer require findymail/pennant-posthog-driver```
 
 
 ## Configuration
