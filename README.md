@@ -10,8 +10,31 @@ __Important Note__ :
 - installation need a personnal access token
 
 
-## Installation : 
+## Install 
+### pre requise
+Create personnal access tocken (https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 
+### workflow to follow (after create access tocken) : 
+#### Install token
+```
+composer config --global --auth github-oauth.github.com your_token
+```
+#### Check token presence : 
+```
+composer config --global --list
+```
+#### Composer repositories :
+
+```
+        {
+            "type": "vcs",
+            "url": "git@github.com:Findymail/pennant-posthog-driver.git"
+        }
+```
+
+
+
+## Command installation
 ```
 composer require findymail/pennant-posthog-driver
 ```
