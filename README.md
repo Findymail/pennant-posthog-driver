@@ -12,7 +12,9 @@ __Important Note__ :
 
 ## Installation : 
 
-```composer require findymail/pennant-posthog-driver```
+```
+composer require findymail/pennant-posthog-driver
+```
 
 
 ## Configuration
