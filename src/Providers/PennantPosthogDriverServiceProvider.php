@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Findymail\PennantPosthogDriver\Providers;
 
 use Findymail\PennantPosthogDriver\Driver\PostHogDriver;
+use Findymail\PennantPosthogDriver\PosthogProxy;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
@@ -24,9 +25,9 @@ class PennantPosthogDriverServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(PostHogDriver::class, function (Application $app) {
-            PostHog::init();
+            $postHogProxy = $app->make(PosthogProxy::class);
 
-            return new PostHogDriver([]);
+            return new PostHogDriver([], $postHogProxy);
         });
     }
 }
