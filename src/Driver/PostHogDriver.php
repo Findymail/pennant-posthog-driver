@@ -2,6 +2,7 @@
 
 namespace Findymail\PennantPosthogDriver\Driver;
 
+use Findymail\PennantPosthogDriver\PosthogProxy;
 use Illuminate\Support\Collection;
 use Laravel\Pennant\Contracts\Driver;
 use PostHog\PostHog;
@@ -9,16 +10,25 @@ use Throwable;
 
 class PostHogDriver implements Driver
 {
+
+    /**
+     * @var array <string, string|callable>
+     */
+    private array $featureStateResolvers = [];
+
     /**
      * @param  array<string, bool>  $localState
      */
-    public function __construct(private array $localState) {}
+    public function __construct(private array $localState, private readonly PosthogProxy $posthogProxy) {}
 
-    public function define(string $feature, callable $resolver): void {}
+    public function define(string $feature, mixed $resolver): void
+    {
+        $this->featureStateResolvers[$feature] = $resolver;
+    }
 
     public function defined(): array
     {
-        return [];
+        return array_keys($this->featureStateResolvers);
     }
 
     /**
@@ -34,14 +44,20 @@ class PostHogDriver implements Driver
             )->toArray();
     }
 
-    public function get(string $feature, mixed $scope): mixed
+    public function get(string $feature, mixed $scope = null): mixed
     {
+        if (isset($this->featureStateResolvers[$feature])) {
+            return is_callable($this->featureStateResolvers[$feature])
+                ? $this->featureStateResolvers[$feature]($scope)
+                : $this->featureStateResolvers[$feature];
+        }
+
         if (isset($this->localState[$feature])) {
             return $this->localState[$feature];
         }
 
         try {
-            $isEnabled = PostHog::isFeatureEnabled($feature, $scope ?? '') === true;
+            $isEnabled = $this->posthogProxy->isFeatureEnabled($feature, $scope ?? '') === true;
         } catch (Throwable) {
             return false;
         }
