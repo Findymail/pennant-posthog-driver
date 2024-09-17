@@ -9,36 +9,14 @@ __Important Note__ :
 - if posthog throw exception, it will always return false when check feature flag
 - installation need a personnal access token
 
-
-## Install 
-### pre requise
-Create personnal access tocken (https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-
-### workflow to follow (after create access tocken) : 
-#### Install token
-```
-composer config --global --auth github-oauth.github.com your_token
-```
-#### Check token presence : 
-```
-composer config --global --list
-```
-#### Composer repositories :
-
-```
-        {
-            "type": "vcs",
-            "url": "git@github.com:Findymail/pennant-posthog-driver.git"
-        }
-```
-
-
-
-## Command installation
+## Installation
 ```
 composer require findymail/pennant-posthog-driver
 ```
-
+## Post install : 
+```
+ sail artisan vendor:publish --provider="Laravel\Pennant\PennantServiceProvider"
+```
 
 ## Configuration
 Adding configuration :
