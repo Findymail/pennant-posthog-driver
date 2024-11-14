@@ -9,7 +9,7 @@ class PosthogProxy
     public function isFeatureEnabled(
         string $key,
         string $distinctId,
-    ): null | bool {
+    ): ?bool {
         return PostHog::isFeatureEnabled(
             $key,
             $distinctId,

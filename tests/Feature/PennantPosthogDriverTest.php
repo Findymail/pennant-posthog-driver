@@ -78,6 +78,31 @@ class PennantPosthogDriverTest extends TestCase
     }
 
     /** @test */
+    public function should_call_posthog_API_based_on_key_cache(): void
+    {
+        // prepare
+        $mock = $this->mock(PosthogProxy::class);
+        $mock->shouldReceive('isFeatureEnabled')
+            ->once()
+            ->with('test-feature-flag', '1')
+            ->andReturn(true);
+        $mock->shouldReceive('isFeatureEnabled')
+            ->once()
+            ->with('test-feature-flag', '2')
+            ->andReturn(true);
+
+        // process
+        $result1 = Feature::for('1')->active('test-feature-flag');
+        $result2 = Feature::for('2')->active('test-feature-flag');
+
+        // tests
+        $this->assertTrue($result1);
+        $this->assertTrue($result2);
+
+        Mockery::close();
+    }
+
+    /** @test */
     public function should_call_allAreActiveProperly(): void
     {
         // prepare
@@ -91,7 +116,6 @@ class PennantPosthogDriverTest extends TestCase
             ->once()
             ->with('test-feature-flag2', '')
             ->andReturn(true);
-
 
         // process
         $result = Feature::allAreActive(['test-feature-flag1', 'test-feature-flag2']);

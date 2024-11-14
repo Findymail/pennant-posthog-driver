@@ -5,12 +5,10 @@ namespace Findymail\PennantPosthogDriver\Driver;
 use Findymail\PennantPosthogDriver\PosthogProxy;
 use Illuminate\Support\Collection;
 use Laravel\Pennant\Contracts\Driver;
-use PostHog\PostHog;
 use Throwable;
 
 class PostHogDriver implements Driver
 {
-
     /**
      * @var array <string, string|callable>
      */
@@ -52,8 +50,10 @@ class PostHogDriver implements Driver
                 : $this->featureStateResolvers[$feature];
         }
 
-        if (isset($this->localState[$feature])) {
-            return $this->localState[$feature];
+        $localStateKey = $this->getStorageKey($feature, $scope);
+
+        if (isset($this->localState[$localStateKey])) {
+            return $this->localState[$localStateKey];
         }
 
         try {
@@ -62,8 +62,8 @@ class PostHogDriver implements Driver
             return false;
         }
 
-        if (!isset($this->localState[$feature])) {
-            $this->localState[$feature] = (bool) $isEnabled;
+        if (!isset($this->localState[$localStateKey])) {
+            $this->localState[$localStateKey] = (bool) $isEnabled;
         }
 
         return $isEnabled;
@@ -90,5 +90,18 @@ class PostHogDriver implements Driver
     public function purge(?array $features): void
     {
         // TODO: Implement purge() method.
+    }
+
+    private function getStorageKey(string $feature, mixed $scope = null)
+    {
+        if (is_array($scope)) {
+            $scopeKey = json_encode($scope);
+        } elseif (is_object($scope)) {
+            $scopeKey = method_exists($scope, '__toString') ? (string) $scope : spl_object_hash($scope);
+        } else {
+            $scopeKey = (string) $scope;
+        }
+
+        return $feature . ':' . md5($scopeKey);
     }
 }
