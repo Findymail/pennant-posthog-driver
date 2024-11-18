@@ -15,4 +15,14 @@ class PosthogProxy
             $distinctId,
         );
     }
+
+    public function getFeatureFlag(
+        string $key,
+        string $distinctId,
+    ): bool|null|string {
+        return PostHog::getFeatureFlag(
+            $key,
+            $distinctId
+        );
+    }
 }

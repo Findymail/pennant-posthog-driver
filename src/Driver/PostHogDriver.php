@@ -50,23 +50,11 @@ class PostHogDriver implements Driver
                 : $this->featureStateResolvers[$feature];
         }
 
-        $localStateKey = $this->getStorageKey($feature, $scope);
-
-        if (isset($this->localState[$localStateKey])) {
-            return $this->localState[$localStateKey];
-        }
-
         try {
-            $isEnabled = $this->posthogProxy->isFeatureEnabled($feature, $scope ?? '') === true;
+            return $this->posthogProxy->getFeatureFlag($feature, $scope ?? '');
         } catch (Throwable) {
-            return false;
+            return null;
         }
-
-        if (!isset($this->localState[$localStateKey])) {
-            $this->localState[$localStateKey] = (bool) $isEnabled;
-        }
-
-        return $isEnabled;
     }
 
     public function set(string $feature, mixed $scope, mixed $value): void
