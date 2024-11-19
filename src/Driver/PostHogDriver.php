@@ -17,6 +17,8 @@ class PostHogDriver implements Driver
 
     public const API_CONFIG_KEY = "posthog.api_key";
     public const HOST_CONFIG_KEY = "posthog.host";
+    public const PERSONAL_API_CONFIG_KEY = "posthog.personal";
+
 
     /**
      * @param  array<string, bool>  $localState
@@ -24,7 +26,9 @@ class PostHogDriver implements Driver
     public function __construct(private array $localState, private readonly PosthogProxy $posthogProxy)
     {
         PostHog::init(config(self::API_CONFIG_KEY), [
-            'host' => config(self::HOST_CONFIG_KEY)
+            'host' => config(self::HOST_CONFIG_KEY),
+            null,
+            config('app.findymail.api.posthog.personal')
         ]);
     }
 

@@ -13,9 +13,6 @@ use PostHog\PostHog;
 
 class PennantPosthogDriverServiceProvider extends ServiceProvider
 {
-    public const API_CONFIG_KEY = "posthog.api_key";
-    public const HOST_CONFIG_KEY = "posthog.host";
-
     public function boot(): void
     {
         Feature::extend('posthog', function (Application $app) {
