@@ -5,6 +5,7 @@ namespace Findymail\PennantPosthogDriver\Driver;
 use Findymail\PennantPosthogDriver\PosthogProxy;
 use Illuminate\Support\Collection;
 use Laravel\Pennant\Contracts\Driver;
+use PostHog\PostHog;
 use Throwable;
 
 class PostHogDriver implements Driver
@@ -14,10 +15,18 @@ class PostHogDriver implements Driver
      */
     private array $featureStateResolvers = [];
 
+    public const API_CONFIG_KEY = "posthog.api_key";
+    public const HOST_CONFIG_KEY = "posthog.host";
+
     /**
      * @param  array<string, bool>  $localState
      */
-    public function __construct(private array $localState, private readonly PosthogProxy $posthogProxy) {}
+    public function __construct(private array $localState, private readonly PosthogProxy $posthogProxy)
+    {
+        PostHog::init(config(self::API_CONFIG_KEY), [
+            'host' => config(self::HOST_CONFIG_KEY)
+        ]);
+    }
 
     public function define(string $feature, mixed $resolver): void
     {

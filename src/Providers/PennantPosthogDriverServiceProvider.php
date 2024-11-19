@@ -13,11 +13,12 @@ use PostHog\PostHog;
 
 class PennantPosthogDriverServiceProvider extends ServiceProvider
 {
+    public const API_CONFIG_KEY = "posthog.api_key";
+    public const HOST_CONFIG_KEY = "posthog.host";
+
     public function boot(): void
     {
         Feature::extend('posthog', function (Application $app) {
-            PostHog::init();
-
             return $app->make(PostHogDriver::class);
         });
     }
@@ -29,5 +30,9 @@ class PennantPosthogDriverServiceProvider extends ServiceProvider
 
             return new PostHogDriver([], $postHogProxy);
         });
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/posthog.php', 'posthog'
+        );
     }
 }
